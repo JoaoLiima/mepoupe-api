@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AverageController } from './average.controller';
 import { AverageService } from './average.service';
-import UserCases from './use-cases';
+import UseCases from './use-cases';
 
 @Module({
-  providers: [AverageService, ...UserCases],
+  providers: [AverageService, ...UseCases],
   controllers: [AverageController],
 })
 export class AverageModule {}

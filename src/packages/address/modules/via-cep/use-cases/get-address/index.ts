@@ -1,5 +1,5 @@
 import { IGetAddressService } from '@/domain/use-cases/service/address/get-address.interface';
-import { BadRequestError } from '@/error';
+import { BadRequestError, NotFoundError } from '@/error';
 import { validateCEP } from '@/common/helpers/validate-cep';
 import { Address } from '@/common/interfaces';
 import { HttpService } from '@/infra/http-service/http-service.service';
@@ -21,19 +21,26 @@ export class GetAddressServiceImplementation implements IGetAddressService {
         `https://viacep.com.br/ws/${cep}/json`,
       );
       const address = response.data;
-      const { bairro } = address;
+      const keys = Object.keys(address);
+      const emptyFields = keys.filter((key) => !address[key]);
 
-      if (!bairro) {
+      if (keys.includes('erro')) {
+        throw new NotFoundError(`Nenhum endereço encontrado para o CEP ${cep}`);
+      }
+
+      if (emptyFields.length > 0) {
         return {
           ...address,
-          message: 'Não foi possível identificar o bairro do CEP fornecido',
+          message: `O CEP ${cep} não contém as informações: ${emptyFields.join(
+            ', ',
+          )}`,
         };
       }
 
       return address;
     } else {
-      LoggerService.error('CEP inválido');
-      throw new BadRequestError('CEP inválido');
+      LoggerService.error(`CEP ${cep} não é válido`);
+      throw new BadRequestError(`O CEP ${cep} não é válido`);
     }
   }
 }

@@ -5,6 +5,7 @@ import { Address } from '@/common/interfaces';
 import { HttpService } from '@/infra/http-service/http-service.service';
 import { forwardRef, Inject } from '@nestjs/common';
 import { GetAddress } from '@/common/interfaces';
+import { LoggerService } from '@/infra/logger/logger.service';
 
 export class GetAddressServiceImplementation implements IGetAddressService {
   constructor(
@@ -18,7 +19,6 @@ export class GetAddressServiceImplementation implements IGetAddressService {
     if (isValid) {
       const response = await this.httpService.get<Address>(
         `https://viacep.com.br/ws/${cep}/json`,
-        { name: 'Nome', age: 'Idade' },
       );
       const address = response.data;
       const { bairro } = address;
@@ -32,6 +32,7 @@ export class GetAddressServiceImplementation implements IGetAddressService {
 
       return address;
     } else {
+      LoggerService.error('CEP inválido');
       throw new BadRequestError('CEP inválido');
     }
   }

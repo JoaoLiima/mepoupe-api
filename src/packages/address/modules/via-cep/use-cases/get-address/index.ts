@@ -4,7 +4,7 @@ import { validateCEP } from '@/common/helpers/validate-cep';
 import { Address } from '@/common/interfaces';
 import { HttpService } from '@/infra/http-service/http-service.service';
 import { forwardRef, Inject } from '@nestjs/common';
-import { GetAddress } from '@/common/interfaces';
+import { GetAddressOutput } from '@/common/interfaces';
 import { LoggerService } from '@/infra/logger/logger.service';
 
 export class GetAddressServiceImplementation implements IGetAddressService {
@@ -13,7 +13,7 @@ export class GetAddressServiceImplementation implements IGetAddressService {
     private readonly httpService: HttpService,
   ) {}
 
-  async execute(cep: string): Promise<GetAddress> {
+  async execute(cep: string): Promise<GetAddressOutput> {
     const isValid = validateCEP(cep);
 
     if (isValid) {

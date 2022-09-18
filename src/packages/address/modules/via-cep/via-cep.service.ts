@@ -1,4 +1,4 @@
-import { GetAddress } from '@/common/interfaces';
+import { GetAddressOutput } from '@/common/interfaces';
 import { IViaCepService } from '@/domain/services/via-cep-service.interface';
 import { Injectable } from '@nestjs/common';
 import { GetAddressServiceImplementation } from './use-cases/get-address';
@@ -9,7 +9,7 @@ export class ViaCepService implements IViaCepService {
     private readonly getAddressService: GetAddressServiceImplementation,
   ) {}
 
-  getAddress(cep: string): Promise<GetAddress> {
+  getAddress(cep: string): Promise<GetAddressOutput> {
     return this.getAddressService.execute(cep);
   }
 }

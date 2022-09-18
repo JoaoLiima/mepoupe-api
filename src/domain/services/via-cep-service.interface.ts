@@ -1,5 +1,5 @@
-import { GetAddress } from '@/common/interfaces';
+import { GetAddressOutput } from '@/common/interfaces';
 
 export interface IViaCepService {
-  getAddress(url: string): Promise<GetAddress>;
+  getAddress(url: string): Promise<GetAddressOutput>;
 }

@@ -1,5 +1,5 @@
-import { GetAddress } from '@/common/interfaces';
+import { GetAddressOutput } from '@/common/interfaces';
 
 export interface IGetAddressService {
-  execute(cep: string): Promise<GetAddress>;
+  execute(cep: string): Promise<GetAddressOutput>;
 }
